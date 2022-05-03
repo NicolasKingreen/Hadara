@@ -1,0 +1,3 @@
+EPOCH1 = 0
+EPOCH2 = 1
+EPOCH3 = 2
