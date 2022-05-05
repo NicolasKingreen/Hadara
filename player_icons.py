@@ -1,0 +1,5 @@
+SCARAB = "Scarab"
+MONKEY = "Monkey"
+PEGASUS = "Pegasus"
+DRAGON = "Dragon"
+LION = "Lion"
