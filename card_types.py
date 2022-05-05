@@ -1,6 +1,6 @@
-INCOME = 0
-MILITARY = 1
-CULTURE = 2
-FOOD = 3
-TECHNICAL = 4
+INCOME = "Income"
+MILITARY = "Military"
+CULTURE = "Culture"
+FOOD = "Food"
+TECHNICAL = "Technical"
 

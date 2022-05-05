@@ -1,3 +1,3 @@
-EPOCH1 = 0
-EPOCH2 = 1
-EPOCH3 = 2
+EPOCH1 = "Epoch 1"
+EPOCH2 = "Epoch 2"
+EPOCH3 = "Epoch 3"

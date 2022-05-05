@@ -7,3 +7,6 @@ class Card:
         self.cost = cost
         self.effect = effect
 
+    def __repr__(self):
+        return f"<Card({self.epoch}, {self.card_type}, {self.values}, {self.points}, {self.cost}, {self.effect})>"
+

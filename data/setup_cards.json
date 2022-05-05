@@ -1,0 +1,56 @@
+{
+  "A": [
+    {
+      "initiative_value": 2,
+      "coins": 8,
+      "values": {"Income": 2, "Military": 1, "Culture": 3, "Food": 4}
+    },
+    {
+      "initiative_value": 1,
+      "coins": 8,
+      "values": {"Income": 3, "Military": 2, "Culture": 1, "Food": 4}
+    },
+    {
+      "initiative_value": 3,
+      "coins": 8,
+      "values": {"Income": 3, "Military": 2, "Culture": 2, "Food": 3}
+    },
+    {
+      "initiative_value": 5,
+      "coins": 9,
+      "values": {"Income": 2, "Military": 2, "Culture": 1, "Food": 5}
+    },
+    {
+      "initiative_value": 4,
+      "coins": 9,
+      "values": {"Income": 2, "Military": 1, "Culture": 2, "Food": 5}
+    }
+  ],
+  "B": [
+    {
+      "initiative_value": 2,
+      "coins": 8,
+      "values": {"Income": 2, "Military": 1, "Culture": 4, "Food": 3}
+    },
+    {
+      "initiative_value": 1,
+      "coins": 8,
+      "values": {"Income": 4, "Military": 1, "Culture": 1, "Food": 4}
+    },
+    {
+      "initiative_value": 3,
+      "coins": 8,
+      "values": {"Income": 2, "Military": 3, "Culture": 3, "Food": 2}
+    },
+    {
+      "initiative_value": 5,
+      "coins": 11,
+      "values": {"Income": 1, "Military": 1, "Culture": 1, "Food": 6}
+    },
+    {
+      "initiative_value": 4,
+      "coins": 10,
+      "values": {"Income": 2, "Military": 2, "Culture": 1, "Food": 4}
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "3": [
+    {
+      "values": {"Income": 0, "Military": 1, "Culture": 1, "Food": 0},
+      "points": 2
+    },
+    {
+      "values": {"Income": 0, "Military": 0, "Culture": 1, "Food": 1},
+      "points": 2
+    },
+    {
+      "values": {"Income": 1, "Military": 1, "Culture": 0, "Food": 0},
+      "points": 2
+    },
+    {
+      "values": {"Income": 0, "Military": 0, "Culture": 1, "Food": 0},
+      "points": 7
+    },
+    {
+      "values": {"Income": 1, "Military": 0, "Culture": 0, "Food": 1},
+      "points": 2
+    }
+  ],
+  "9": [
+    {
+      "values": {"Income": 1, "Military": 0, "Culture": 0, "Food": 1},
+      "points": 10
+    },
+    {
+      "values": {"Income": 0, "Military": 0, "Culture": 2, "Food": 1},
+      "points": 5
+    },
+    {
+      "values": {"Income": 1, "Military": 0, "Culture": 0, "Food": 2},
+      "points": 5
+    },
+    {
+      "values": {"Income": 0, "Military": 2, "Culture": 1, "Food": 0},
+      "points": 5
+    },
+    {
+      "values": {"Income": 2, "Military": 1, "Culture": 0, "Food": 0},
+      "points": 5
+    }
+  ],
+  "15": [
+    {
+      "values": {"Income": 1, "Military": 0, "Culture": 1, "Food": 0},
+      "points": 13
+    },
+    {
+      "values": {"Income": 1, "Military": 1, "Culture": 0, "Food": 0},
+      "points": 13
+    },
+    {
+      "values": {"Income": 0, "Military": 1, "Culture": 1, "Food": 2},
+      "points": 8
+    },
+    {
+      "values": {"Income": 1, "Military": 1, "Culture": 2, "Food": 0},
+      "points": 8
+    },
+    {
+      "values": {"Income": 2, "Military": 0, "Culture": 1, "Food": 1},
+      "points": 8
+    }
+  ],
+  "21": [
+    {
+      "values": {"Income": 0, "Military": 2, "Culture": 3, "Food": 0},
+      "points": 11
+    },
+    {
+      "values": {"Income": 1, "Military": 0, "Culture": 0, "Food": 1},
+      "points": 16
+    },
+    {
+      "values": {"Income": 3, "Military": 0, "Culture": 0, "Food": 2},
+      "points": 11
+    },
+    {
+      "values": {"Income": 0, "Military": 1, "Culture": 1, "Food": 0},
+      "points": 16
+    },
+    {
+      "values": {"Income": 0, "Military": 0, "Culture": 2, "Food": 3},
+      "points": 11
+    }
+  ],
+  "30": [
+    {
+      "values": {"Income": 0, "Military": 0, "Culture": 3, "Food": 0},
+      "points": 24
+    },
+    {
+      "values": {"Income": 0, "Military": 0, "Culture": 0, "Food": 3},
+      "points": 24
+    },
+    {
+      "values": {"Income": 0, "Military": 0, "Culture": 3, "Food": 2},
+      "points": 20
+    },
+    {
+      "values": {"Income": 0, "Military": 0, "Culture": 2, "Food": 3},
+      "points": 20
+    },
+    {
+      "values": {"Income": 0, "Military": 0, "Culture": 0, "Food": 4},
+      "points": 22
+    }
+  ]
+}

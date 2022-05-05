@@ -1,0 +1,308 @@
+{
+    "e1": [
+        {
+            "cost": 2,
+            "victory_points": 3,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 1
+            }
+        },
+        {
+            "cost": 3,
+            "victory_points": 2,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 2
+            }
+        },
+        {
+            "cost": 4,
+            "victory_points": 2,
+            "bonus": {
+                "warfare": 1,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 2
+            }
+        },
+        {
+            "cost": 3,
+            "victory_points": 5,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 1
+            }
+        },
+        {
+            "cost": 2,
+            "victory_points": 1,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 2
+            }
+        },
+        {
+            "cost": 3,
+            "victory_points": 1,
+            "bonus": {
+                "warfare": 1,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 2
+            }
+        },
+        {
+            "cost": 3,
+            "victory_points": 2,
+            "bonus": {
+                "warfare": 1,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 1
+            }
+        },
+        {
+            "cost": 2,
+            "victory_points": 1,
+            "bonus": {
+                "warfare": 1,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 1
+            }
+        },
+        {
+            "cost": 1,
+            "victory_points": 1,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 1
+            }
+        },
+        {
+            "cost": 4,
+            "victory_points": 4,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 2
+            }
+        }
+    ],
+    "e2": [
+        {
+            "cost": 6,
+            "victory_points": 6,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 2
+            }
+        },
+        {
+            "cost": 5,
+            "victory_points": 2,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 3
+            }
+        },
+        {
+            "cost": 4,
+            "victory_points": 2,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 2
+            }
+        },
+        {
+            "cost": 5,
+            "victory_points": 2,
+            "bonus": {
+                "warfare": 1,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 2
+            }
+        },
+        {
+            "cost": 6,
+            "victory_points": 4,
+            "bonus": {
+                "warfare": 1,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 2
+            }
+        },
+        {
+            "cost": 6,
+            "victory_points": 4,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 3
+            }
+        },
+        {
+            "cost": 4,
+            "victory_points": 5,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 1
+            }
+        },
+        {
+            "cost": 5,
+            "victory_points": 4,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 2
+            }
+        },
+        {
+            "cost": 6,
+            "victory_points": 2,
+            "bonus": {
+                "warfare": 1,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 3
+            }
+        },
+        {
+            "cost": 5,
+            "victory_points": 1,
+            "bonus": {
+                "warfare": 2,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 2
+            }
+        }
+    ],
+    "e3": [
+        {
+            "cost": 7,
+            "victory_points": 4,
+            "bonus": {
+                "warfare": 1,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 2
+            }
+        },
+        {
+            "cost": 9,
+            "victory_points": 4,
+            "bonus": {
+                "warfare": 1,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 4
+            }
+        },
+        {
+            "cost": 9,
+            "victory_points": 2,
+            "bonus": {
+                "warfare": 1,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 5
+            }
+        },
+        {
+            "cost": 8,
+            "victory_points": 4,
+            "bonus": {
+                "warfare": 1,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 3
+            }
+        },
+        {
+            "cost": 9,
+            "victory_points": 4,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 5
+            }
+        },
+        {
+            "cost": 9,
+            "victory_points": 8,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 3
+            }
+        },
+        {
+            "cost": 7,
+            "victory_points": 4,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 3
+            }
+        },
+        {
+            "cost": 8,
+            "victory_points": 4,
+            "bonus": {
+                "warfare": 0,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 4
+            }
+        },
+        {
+            "cost": 8,
+            "victory_points": 2,
+            "bonus": {
+                "warfare": 1,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 4
+            }
+        },
+        {
+            "cost": 8,
+            "victory_points": 2,
+            "bonus": {
+                "warfare": 2,
+                "culture": 0,
+                "agriculture": 0,
+                "economy": 3
+            }
+        }
+    ]
+}
