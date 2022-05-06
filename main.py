@@ -128,6 +128,7 @@ while not game_finished:
     }
 
     # fight colonies
+    # TODO: fix bug: need to update player values when adding card
 
     for player in players:
         print(f"{player} makes his move")
@@ -152,7 +153,7 @@ while not game_finished:
             # chose random colony
             if action == 'join':
                 random_colony = random.choice(collection.colonies[strength])
-                
+
                 # check if enough coins
                 if player.coins > cost[random_colony.strength][action]:
                     player.coins -= cost[accessible_strength][action]
@@ -208,8 +209,8 @@ while not game_finished:
     for player in players:
         pass
     # if enough food
-    for player in players:
-        player.has_enough_food()
+    # for player in players:
+    #     player.has_enough_food()
 
     # next epoch, starting player is the next by initiative value
     current_epoch_n += 1
