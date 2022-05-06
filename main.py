@@ -6,6 +6,7 @@ from epochs import *
 from card_types import *
 from player_icons import *
 from colony_types import *
+from enums import *
 
 # utilities
 from utility import *
@@ -66,6 +67,7 @@ def fight_colony(player):
     }
 
     # TODO: make player choose between available colonies types
+
     # initialize max strength of player colonies if they exist
     max_strength = max([colony.strength for colony in player.colonies]) if len(player.colonies) else -1
 
@@ -85,7 +87,7 @@ def fight_colony(player):
               f"Number of colonies: {len(collection.colonies[colony_type])}")
         action = input("Chose what you want to do? (join or rob): ").lower()
 
-        # chose random colony
+        # choose random colony
         random_colony = random.choice(collection.colonies[colony_type])
         if action == 'join':
 
@@ -99,14 +101,15 @@ def fight_colony(player):
                 player.update_track_values()
             else:
                 print("not enough money")
-        elif action == 'rob':
+        else:
+            # TODO: fix bug when player robs colonies, he can rob them again
             collection.colonies[colony_type].remove(random_colony)
             player.coins += cost[accessible_strength][action]
     else:
         print(f"{player.icon}, sorry, you can't take or rob any colonies.")
 
 
-print("Welcome to Hadara!")  # TODO: Make initialize of players
+print("Welcome to Hadara!")
 players_count = int(input("Input the amount of players (2-5): "))
 
 players = []
@@ -131,8 +134,6 @@ for i in range(players_count):
     unused_icons.remove(icon)
     unused_setup_cards.remove(setup_card)
 players.sort(key=lambda player: player.initiative_value)
-
-
 
 collection.set_for_n_players(players_count)  # removes excessive cards
 
@@ -169,7 +170,8 @@ while not game_finished:
             print(f"Choose card to buy/sell (1 or 2):")
             choice = int(input()) - 1
             chosen_card = choices[choice]
-            if input("Buy or sell? \n* Cards that you sell are completely discarded from the game.\n") == "buy":
+            if input("Buy or sell?\n"
+                     "* Cards that you sell are completely discarded from the game.\n").lower() == "buy":
                 player.add_card(chosen_card)
             else:
                 player.coins += (current_epoch_n + 1)
