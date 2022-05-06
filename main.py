@@ -133,6 +133,7 @@ while not game_finished:
 
     for player in players:
         # check if can fight a colony
+        print(f"{player} makes his move")
         sum_military_of_player = player.track_values[MILITARY]
         for player_military_card in player.cards[MILITARY]:
             sum_military_of_player += player_military_card.values[MILITARY]
@@ -146,12 +147,19 @@ while not game_finished:
         if accessible_strength != -1:
             print(f"You can rob or take colonies with strength {accessible_strength}. Number of colonies"
                   f" {len(collection.colonies[strength])}")
-            action = input("Chose what you want to do? ('join or rob')").lower()
+            action = input("Chose what you want to do? ('join or rob') ").lower()
             if action == 'join':
                 random_colony = random.choice(collection.colonies[strength])
                 player.add_colony(random_colony)
                 collection.colonies[strength].remove(random_colony)
-                player.coins -= cost[accessible_strength][action]  # check if enough coins
+                player.track_values[INCOME] += random_colony.values[INCOME]
+                player.track_values[MILITARY] += random_colony.values[MILITARY]
+                player.track_values[CULTURE] += random_colony.values[CULTURE]
+                player.track_values[FOOD] += random_colony.values[FOOD]
+                if player.coins > cost[random_colony.strength][action]:
+                    player.coins -= cost[accessible_strength][action]  # check if enough coins
+                else:
+                    print("not enough money")
             elif action == 'rob':
                 random_colony = random.choice(collection.colonies[strength])
                 collection.colonies[strength].remove(random_colony)
