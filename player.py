@@ -37,3 +37,14 @@ class Player:
     def __repr__(self):
         return f"<Player({self.icon}, {self.coins} coins, {self.track_values}, {self.initiative_value}, {self.cards})>"
 
+    def get_income(self):
+        self.coins += self.track_values[INCOME]
+
+    def has_enough_food(self):
+        total_cards = sum(len(self.cards[card_type]) for card_type in self.cards)
+        if total_cards >= self.track_values[FOOD]:
+            random_type = random.choice(self.cards)
+            random_card = random.choice(self.cards[random_type])
+            self.cards[random_type].remove(random_card)
+
+

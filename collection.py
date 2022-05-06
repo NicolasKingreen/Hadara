@@ -1,3 +1,5 @@
+# system
+import random
 # constants
 from card_types import *
 from colony_types import *
@@ -103,6 +105,10 @@ class Collection:
         if card not in self.cards[card.epoch][card.card_type]:
             self.cards[card.epoch][card.card_type].append(card)
 
+    def remove_card(self, card):
+        if card in self.cards[card.epoch][card.card_type]:
+            self.cards[card.epoch][card.card_type].remove(card)
+
     def add_colony(self, colony):
         strength_to_type = {
             3: VERY_EASY,
@@ -113,6 +119,12 @@ class Collection:
         }
         colony_type = strength_to_type[colony.strength]
         self.colonies[colony_type].append(colony)
+
+    def set_for_n_players(self, n):
+        for epoch in self.cards:
+            for card_type in self.cards[epoch]:
+                for _ in range(len(self.cards[epoch][card_type]) - n * 2):
+                    self.cards[epoch][card_type].remove(random.choice(self.cards[epoch][card_type]))
 
     def print(self):
         print()
