@@ -96,8 +96,6 @@ while not game_finished:
         player.get_income()
 
     # chose colony to fight
-    accessible_colonies = []
-    robed_colonies = []
     cost = {
         3: {
             'join': 1,
@@ -132,32 +130,40 @@ while not game_finished:
     # fight colonies
 
     for player in players:
-        # check if can fight a colony
         print(f"{player} makes his move")
         sum_military_of_player = player.track_values[MILITARY]
         for player_military_card in player.cards[MILITARY]:
+            # take a sum of military value of every player card
             sum_military_of_player += player_military_card.values[MILITARY]
 
+        # initialize max strength of player colonies if they exists
         max_strength = max([colony.strength for colony in player.colonies]) if len(player.colonies) > 0 else -1
         accessible_strength = -1
+        # allows to chose colonies that doesn't exists in player stash
         for strength in collection.colonies:
             if max_strength < colony_type_to_strength[strength] <= sum_military_of_player:
                 accessible_strength = colony_type_to_strength[strength]
                 break
+
         if accessible_strength != -1:
             print(f"You can rob or take colonies with strength {accessible_strength}. Number of colonies"
-                  f" {len(collection.colonies[strength])}")
+                  f" {len(collection.colonies[strength])}")  # how it works?
             action = input("Chose what you want to do? ('join or rob') ").lower()
+            # chose random colony
             if action == 'join':
                 random_colony = random.choice(collection.colonies[strength])
                 player.add_colony(random_colony)
                 collection.colonies[strength].remove(random_colony)
+
+                #  update player values
                 player.track_values[INCOME] += random_colony.values[INCOME]
                 player.track_values[MILITARY] += random_colony.values[MILITARY]
                 player.track_values[CULTURE] += random_colony.values[CULTURE]
                 player.track_values[FOOD] += random_colony.values[FOOD]
+
+                # check if enough coins
                 if player.coins > cost[random_colony.strength][action]:
-                    player.coins -= cost[accessible_strength][action]  # check if enough coins
+                    player.coins -= cost[accessible_strength][action]
                 else:
                     print("not enough money")
             elif action == 'rob':
@@ -167,7 +173,6 @@ while not game_finished:
             print(player)
         else:
             print("Nothing to do!")
-
 
     # make sculptures
     for player in players:
