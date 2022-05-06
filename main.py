@@ -7,6 +7,9 @@ from card_types import *
 from player_icons import *
 from colony_types import *
 
+# utilities
+from utility import *
+
 # classes
 from collection import Collection
 from player import Player
@@ -28,7 +31,78 @@ unused_setup_cards = []
 for a, b in zip(collection.setup_cards["A"], collection.setup_cards["B"]):
     unused_setup_cards.append(a)
     unused_setup_cards.append(b)
-print(len(unused_setup_cards), unused_setup_cards)
+
+
+def fight_colony(player):
+    # utility tables
+    cost = {
+        3: {
+            'join': 1,
+            'rob': 3
+        },
+        9: {
+            'join': 1,
+            'rob': 4
+        },
+        15: {
+            'join': 2,
+            'rob': 5
+        },
+        21: {
+            'join': 2,
+            'rob': 7
+        },
+        30: {
+            'join': 4,
+            'rob': 12
+        }
+    }
+    colony_type_to_strength = {
+        VERY_EASY: 3,
+        EASY: 9,
+        MEDIUM: 15,
+        HARD: 21,
+        VERY_HARD: 30
+    }
+
+    # TODO: make player choose between available colonies
+    # initialize max strength of player colonies if they exist
+    max_strength = max([colony.strength for colony in player.colonies]) if len(player.colonies) else -1
+
+    # allows to chose colonies that doesn't exist in player stash
+    accessible_strength = -1
+    for strength in collection.colonies:
+        if max_strength < colony_type_to_strength[strength] <= player.track_values[MILITARY]:
+            accessible_strength = colony_type_to_strength[strength]
+            break
+
+    if accessible_strength != -1:
+        print(player)
+        colony_type = get_key_from_value(colony_type_to_strength, accessible_strength)
+        print(f"You can rob or take colonies with strength {accessible_strength}. "
+              f"Number of colonies: {len(collection.colonies[colony_type])}")  # how it works?
+        action = input("Chose what you want to do? (join or rob): ").lower()
+
+        # chose random colony
+        random_colony = random.choice(collection.colonies[colony_type])
+        if action == 'join':
+
+            # check if enough coins
+            if player.coins > cost[random_colony.strength][action]:
+                player.coins -= cost[accessible_strength][action]
+                player.add_colony(random_colony)
+                collection.colonies[colony_type].remove(random_colony)
+
+                #  update player values
+                player.update_track_values()
+            else:
+                print("not enough money")
+        elif action == 'rob':
+            collection.colonies[colony_type].remove(random_colony)
+            player.coins += cost[accessible_strength][action]
+    else:
+        print(f"{player.icon}, sorry, you can't take or rob any colonies.")
+
 
 print("Welcome to Hadara!")
 players_count = int(input("Input the amount of players (2-5): "))
@@ -59,27 +133,33 @@ current_epoch = epochs[current_epoch_n]
 game_finished = False
 while not game_finished:
     print(current_epoch, "begins!")
+
     # ask starting player for wheel position
-    print(f"{players[current_epoch_n].icon}, choose where to start:\n"
-          f"1. Income\n2. Military\n3. Culture\n4. Food\n5. Technical")
+    print(f"{players[0].icon}, choose where to start:\n"
+          f"1. Income\n"
+          f"2. Military\n"
+          f"3. Culture\n"
+          f"4. Food")
+          # f"5. Technical")
     start_pos = int(input()) - 1
 
     # phase A
     # while not at start
     #   ask every player for turn (takes 2 current type cards and decide to buy one on these or sell)
-    for _ in range(len(circle)):
-        for i, player in enumerate(players[current_epoch_n:]):  # potential bug
-            print(player, "makes his move.")
-            current_type_n = start_pos + i
-            current_type = circle[current_type_n % len(circle)]
+    for _ in circle:
+        for i, player in enumerate(players):
+            print(player)
+            current_type = circle[(start_pos + i) % len(circle)]
             choices = random.sample(collection.cards[current_epoch][current_type], 2)
-            print(f"{player.icon} ({current_type}), choose (1 or 2):")
-            print(choices)
+            print(f"You are on {current_type}. Now you have to choose between two cards of the current type.\n"
+                  f"One of them will be available for you to buy or sell. "
+                  f"The other one will be discarded back to the game.")
+            for i, choice in enumerate(choices):
+                print(f"{i+1}.", choice)
+            print(f"Choose card to buy/sell (1 or 2):")
             choice = int(input()) - 1
             chosen_card = choices[choice]
-            print(f"{chosen_card}")
-            if input("Buy or sell? ") == "buy":
-                # TODO: need to update player values when adding card
+            if input("Buy or sell? \n* Cards that you sell are completely discarded from the game.\n") == "buy":
                 player.add_card(chosen_card)
             else:
                 player.coins += (current_epoch_n + 1)
@@ -95,88 +175,11 @@ while not game_finished:
     # pay coins
     for player in players:
         player.get_income()
-
-    # chose colony to fight
-    cost = {
-        3: {
-            'join': 1,
-            'rob': 3
-        },
-        9: {
-            'join': 1,
-            'rob': 4
-        },
-        15: {
-            'join': 2,
-            'rob': 5
-        },
-        21: {
-            'join': 2,
-            'rob': 7
-        },
-        30: {
-            'join': 4,
-            'rob': 12
-        }
-    }
-
-    colony_type_to_strength = {
-        VERY_EASY: 3,
-        EASY: 9,
-        MEDIUM: 15,
-        HARD: 21,
-        VERY_HARD: 30
-    }
-
     # fight colonies
-
-
     for player in players:
-        print(f"{player} makes his move")
-        sum_military_of_player = player.track_values[MILITARY]
-        for player_military_card in player.cards[MILITARY]:
-            # take a sum of military value of every player card
-            sum_military_of_player += player_military_card.values[MILITARY]
-
-        # initialize max strength of player colonies if they exists
-        max_strength = max([colony.strength for colony in player.colonies]) if len(player.colonies) > 0 else -1
-        accessible_strength = -1
-        # allows to chose colonies that doesn't exists in player stash
-        for strength in collection.colonies:
-            if max_strength < colony_type_to_strength[strength] <= sum_military_of_player:
-                accessible_strength = colony_type_to_strength[strength]
-                break
-
-        if accessible_strength != -1:
-            print(f"You can rob or take colonies with strength {accessible_strength}. Number of colonies"
-                  f" {len(collection.colonies[strength])}")  # how it works?
-            action = input("Chose what you want to do? ('join or rob') ").lower()
-            # chose random colony
-            if action == 'join':
-                random_colony = random.choice(collection.colonies[strength])
-
-                # check if enough coins
-                if player.coins > cost[random_colony.strength][action]:
-                    player.coins -= cost[accessible_strength][action]
-                    player.add_colony(random_colony)
-                    collection.colonies[strength].remove(random_colony)
-
-                    #  update player values
-                    player.track_values[INCOME] += random_colony.values[INCOME]
-                    player.track_values[MILITARY] += random_colony.values[MILITARY]
-                    player.track_values[CULTURE] += random_colony.values[CULTURE]
-                    player.track_values[FOOD] += random_colony.values[FOOD]
-                else:
-                    print("not enough money")
-            elif action == 'rob':
-                random_colony = random.choice(collection.colonies[strength])
-                collection.colonies[strength].remove(random_colony)
-                player.coins += cost[accessible_strength][action]
-            print(player)
-        else:
-            print("Nothing to do!")
-
+        fight_colony(player)
     # make sculptures
+    # TODO: sculptures :)
     for player in players:
         pass  # check if can make a sculpture
 
@@ -205,15 +208,19 @@ while not game_finished:
 
     # fight colonies
     for player in players:
-        pass
+        fight_colony(player)
+
     # make sculptures
     for player in players:
         pass
+
     # if enough food
-    # for player in players:
-    #     player.has_enough_food()
+    for player in players:
+        player.has_enough_food()
 
     # next epoch, starting player is the next by initiative value
     current_epoch_n += 1
     current_epoch = epochs[current_epoch_n]
+    shift(players, 1)
 
+# TODO: final score
