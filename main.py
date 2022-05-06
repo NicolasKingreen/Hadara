@@ -5,6 +5,7 @@ import random
 from epochs import *
 from card_types import *
 from player_icons import *
+from colony_types import *
 
 # classes
 from collection import Collection
@@ -27,6 +28,7 @@ unused_setup_cards = []
 for a, b in zip(collection.setup_cards["A"], collection.setup_cards["B"]):
     unused_setup_cards.append(a)
     unused_setup_cards.append(b)
+print(len(unused_setup_cards), unused_setup_cards)
 
 print("Welcome to Hadara!")
 players_count = int(input("Input the amount of players (2-5): "))
@@ -37,10 +39,11 @@ for _ in range(players_count):
     setup_card = random.choice(unused_setup_cards)
 
     # let players choose which side of setup cards to pick
-    #setup_card_i = random.randint(0, len(unused_setup_cards) // 2 - 1) * 2
-    #print(f"{icon}, choose your setup card (1 or 2):")
-    #print(unused_setup_cards[setup_card_i], unused_setup_cards[setup_card_i+1])
-    #setup_card = unused_setup_cards[setup_card_i + int(input()) - 1]
+    # setup_card_i = random.randint(0, len(unused_setup_cards) // 2 - 1) * 2
+    # print(setup_card_i)
+    # print(f"{icon}, choose your setup card (1 or 2):")
+    # print(unused_setup_cards[setup_card_i], unused_setup_cards[setup_card_i+1])
+    # setup_card = unused_setup_cards[setup_card_i + int(input()) - 1]
 
     new_player = Player(icon, setup_card)
     players.append(new_player)
@@ -58,7 +61,7 @@ while not game_finished:
     print(current_epoch, "begins!")
     # ask starting player for wheel position
     print(f"{players[current_epoch_n].icon}, choose where to start:\n"
-          f"1.Income\n2. Military\n3. Culture\n4. Food\n5. Technical")
+          f"1. Income\n2. Military\n3. Culture\n4. Food\n5. Technical")
     start_pos = int(input()) - 1
 
     # phase A
@@ -91,9 +94,73 @@ while not game_finished:
     # pay coins
     for player in players:
         player.get_income()
+
+    # chose colony to fight
+    accessible_colonies = []
+    robed_colonies = []
+    cost = {
+        3: {
+            'join': 1,
+            'rob': 3
+        },
+        9: {
+            'join': 1,
+            'rob': 4
+        },
+        15: {
+            'join': 2,
+            'rob': 5
+        },
+        21: {
+            'join': 2,
+            'rob': 7
+        },
+        30: {
+            'join': 4,
+            'rob': 12
+        }
+    }
+
+    colony_type_to_strength = {
+        VERY_EASY: 3,
+        EASY: 9,
+        MEDIUM: 15,
+        HARD: 21,
+        VERY_HARD: 30
+    }
+
     # fight colonies
+
     for player in players:
-        pass  # check if can fight a colony
+        # check if can fight a colony
+        sum_military_of_player = player.track_values[MILITARY]
+        for player_military_card in player.cards[MILITARY]:
+            sum_military_of_player += player_military_card.values[MILITARY]
+
+        max_strength = max([colony.strength for colony in player.colonies]) if len(player.colonies) > 0 else -1
+        accessible_strength = -1
+        for strength in collection.colonies:
+            if max_strength < colony_type_to_strength[strength] <= sum_military_of_player:
+                accessible_strength = colony_type_to_strength[strength]
+                break
+        if accessible_strength != -1:
+            print(f"You can rob or take colonies with strength {accessible_strength}. Number of colonies"
+                  f" {len(collection.colonies[strength])}")
+            action = input("Chose what you want to do? ('join or rob')").lower()
+            if action == 'join':
+                random_colony = random.choice(collection.colonies[strength])
+                player.add_colony(random_colony)
+                collection.colonies[strength].remove(random_colony)
+                player.coins -= cost[accessible_strength][action]  # check if enough coins
+            elif action == 'rob':
+                random_colony = random.choice(collection.colonies[strength])
+                collection.colonies[strength].remove(random_colony)
+                player.coins += cost[accessible_strength][action]
+            print(player)
+        else:
+            print("Nothing to do!")
+
+
     # make sculptures
     for player in players:
         pass  # check if can make a sculpture

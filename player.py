@@ -1,5 +1,6 @@
 from card_types import *
 from epochs import *
+import random
 
 
 class Player:
@@ -13,6 +14,7 @@ class Player:
         self.silver_medals = []
         self.golden_medals = []
         self.statues = []
+        self.colonies = []
 
         self.cards = {
             INCOME: [],
@@ -21,6 +23,10 @@ class Player:
             FOOD: [],
             TECHNICAL: []
         }
+
+    def add_colony(self, colony):
+        if colony not in self.colonies:
+            self.colonies.append(colony)
 
     def add_card(self, card):
         if self.coins >= card.cost:  # make decreasing price
@@ -35,7 +41,7 @@ class Player:
         return self.setup_card.initiative_value
 
     def __repr__(self):
-        return f"<Player({self.icon}, {self.coins} coins, {self.track_values}, {self.initiative_value}, {self.cards})>"
+        return f"<Player({self.icon}, {self.coins} coins, {self.track_values}, {self.initiative_value}, {self.cards}, {self.colonies})>"
 
     def get_income(self):
         self.coins += self.track_values[INCOME]
