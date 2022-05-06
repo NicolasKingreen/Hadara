@@ -109,6 +109,12 @@ def fight_colony(player):
         print(f"{player.icon}, sorry, you can't take or rob any colonies.")
 
 
+def make_sculpture(player):
+    # TODO: sculptures :)
+    # check if can make a sculpture
+    pass
+
+
 print("Welcome to Hadara!")
 players_count = int(input("Input the amount of players (2-5): "))
 
@@ -120,7 +126,6 @@ for i in range(players_count):
         print(f"{j + 1}. {icon}")
     icon = unused_icons[int(input(f"Player {i + 1} chooses: ")) - 1]
     setup_card = random.choice(unused_setup_cards)
-
 
     # let players choose which side of setup cards to pick
     # setup_card_i = random.randint(0, len(unused_setup_cards) // 2 - 1) * 2
@@ -141,7 +146,7 @@ current_epoch_n = 0
 current_epoch = epochs[current_epoch_n]
 
 game_finished = False
-# TODO: After first epoch ends first player make last move.
+# TODO: fix bug when after the first epoch ends first player makes his move last
 while not game_finished:
     print(current_epoch, "begins!")
 
@@ -191,14 +196,8 @@ while not game_finished:
     for player in players:
         fight_colony(player)
     # make sculptures
-    # TODO: sculptures :)
     for player in players:
-        # check if can make a sculpture
-        print(player, "Trying to build structure")
-        sum_player_culture = player.track_values[CULTURE]
-        for card in player.cards[CULTURE]:
-            pass
-
+        make_sculpture(player)
 
     # phase B
     # while cards on the table
@@ -229,7 +228,7 @@ while not game_finished:
 
     # make sculptures
     for player in players:
-        pass
+        make_sculpture(player)
 
     # if enough food
     for player in players:
@@ -240,4 +239,8 @@ while not game_finished:
     current_epoch = epochs[current_epoch_n]
     shift(players, 1)
 
-# TODO: final score
+print("Game is over. Thanks for playing!")
+print("Results:")
+players.sort(key=lambda player: player.get_score(), reverse=True)
+for i, player in enumerate(players):
+    print(f"{i + 1}. {player.icon} ({player.get_score()})")

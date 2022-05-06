@@ -8,8 +8,12 @@ class ValueType(IntEnum):
     FOOD = 4
 
 
-class CardType(ValueType):
+class CardType(IntEnum):
     DUMMY = 0
+    INCOME = 1
+    MILITARY = 2
+    CULTURE = 3
+    FOOD = 4
     TECHNICAL = 5
 
 
@@ -27,4 +31,3 @@ class SculptureType(IntEnum):
     SMALL = 12
     REGULAR = 20
     HUGE = 30
-I

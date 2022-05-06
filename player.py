@@ -98,3 +98,13 @@ class Player:
             random_type = random.choice(self.cards)
             random_card = random.choice(self.cards[random_type])
             self.cards[random_type].remove(random_card)
+
+    def get_score(self):
+        total_score = 0
+        for card_type in self.cards:
+            for card in self.cards[card_type]:
+                total_score += card.points
+        for colony in self.colonies:
+            total_score += colony.points
+        # TODO: sculptures, medals
+        return total_score
