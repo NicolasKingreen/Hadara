@@ -11,6 +11,6 @@ class Colony:
         return f"<Colony({self.strength}, {self.points}, {self.values})>"
 
     def __str__(self):
-        return f"({self.values[INCOME]}, {self.values[MILITARY]}," \
+        return f"({self.values[INCOME]}, {self.values[MILITARY]}, " \
                f"{self.values[CULTURE]}, {self.values[FOOD]}) " \
                f"& {self.points} victory points"

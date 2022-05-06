@@ -65,6 +65,16 @@ class Player:
     def add_colony(self, colony):
         if colony not in self.colonies:
             self.colonies.append(colony)
+            self.track_values[CULTURE] += colony.values[CULTURE]
+            self.track_values[MILITARY] += colony.values[MILITARY]
+            self.track_values[INCOME] += colony.values[INCOME]
+            self.track_values[FOOD] += colony.values[FOOD]
+
+    def add_structure(self, structure):
+        if len(self.statues) <= 4:
+            self.statues.append(structure)
+        else:
+            print("You have 4 structures yet")
 
     def update_track_values(self):
         """Recalculates track values from owned cards, colonies and sculptures"""

@@ -11,6 +11,8 @@ import json
 from card import Card
 from colony import Colony
 from setup_card import SetupCard
+from structure import Structure
+import structure_type
 
 
 INCOME_CARDS_PATH = "data/y_cards.json"
@@ -22,6 +24,8 @@ TECHNICAL_CARDS_PATH = ""
 COLONIES_PATH = "data/colonies.json"
 
 SETUP_CARDS_PATH = "data/setup_cards.json"
+
+STRUCTURE_PATH = "data/structures.json"
 
 
 class Collection:
@@ -58,6 +62,13 @@ class Collection:
             VERY_HARD: []
         }
 
+        self.structures = {
+            structure_type.EASY: [],
+            structure_type.MEDIUM: [],
+            structure_type.STRONG: [],
+            structure_type.VERY_STRONG: []
+        }
+
         # reads colonies from json
         with open(COLONIES_PATH) as file:
             colonies = json.load(file)
@@ -77,6 +88,12 @@ class Collection:
                 for setup_card in setup_cards[side]:
                     new_setup_card = SetupCard(setup_card["initiative_value"], setup_card["coins"], setup_card["values"])
                     self.setup_cards[side].append(new_setup_card)
+
+        with open(STRUCTURE_PATH) as file:
+            structures = json.load(file)
+            for culture in structures:
+                new_structure = Structure(int(culture), structures[culture]['Counter'], structures[culture]['Victory points'])
+                self.add_structure(new_structure)
 
     def load_and_add_cards(self, cards_type, path):
         with open(path) as file:
@@ -120,11 +137,24 @@ class Collection:
         colony_type = strength_to_type[colony.strength]
         self.colonies[colony_type].append(colony)
 
+    def add_structure(self, structure):
+        number_to_type = {
+            6: structure_type.EASY,
+            12: structure_type.MEDIUM,
+            20: structure_type.STRONG,
+            30: structure_type.VERY_STRONG
+        }
+        struct_type = number_to_type[structure.culture]
+        self.structures[struct_type].append(structure)
+
     def set_for_n_players(self, n):
         for epoch in self.cards:
             for card_type in self.cards[epoch]:
                 for _ in range(len(self.cards[epoch][card_type]) - n * 2):
                     self.cards[epoch][card_type].remove(random.choice(self.cards[epoch][card_type]))
+
+
+
 
     def print(self):
         print()
@@ -148,6 +178,8 @@ class Collection:
             for setup_card in self.setup_cards[side]:
                 print("\t", setup_card)
 
+        print()
+        print(self.structures)
 
 if __name__ == "__main__":
     collection = Collection()

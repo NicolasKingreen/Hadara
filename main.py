@@ -65,7 +65,7 @@ def fight_colony(player):
         VERY_HARD: 30
     }
 
-    # TODO: make player choose between available colonies
+    # TODO: make player choose between available colonies types
     # initialize max strength of player colonies if they exist
     max_strength = max([colony.strength for colony in player.colonies]) if len(player.colonies) else -1
 
@@ -80,7 +80,9 @@ def fight_colony(player):
         print(player)
         colony_type = get_key_from_value(colony_type_to_strength, accessible_strength)
         print(f"You can rob or take colonies with strength {accessible_strength}. "
-              f"Number of colonies: {len(collection.colonies[colony_type])}")  # how it works?
+              f"It will cost {cost[accessible_strength]['join']}. "
+              f"While robin will give you {cost[accessible_strength]['rob']}"
+              f"Number of colonies: {len(collection.colonies[colony_type])}")
         action = input("Chose what you want to do? (join or rob): ").lower()
 
         # chose random colony
@@ -104,13 +106,18 @@ def fight_colony(player):
         print(f"{player.icon}, sorry, you can't take or rob any colonies.")
 
 
-print("Welcome to Hadara!")
+print("Welcome to Hadara!")  # TODO: Make initialize of players
 players_count = int(input("Input the amount of players (2-5): "))
 
 players = []
-for _ in range(players_count):
-    icon = random.choice(unused_icons)
+for i in range(players_count):
+    # icon = random.choice(unused_icons)
+    print("Available icons: ")
+    for j, icon in enumerate(unused_icons):
+        print(f"{j + 1}. {icon}")
+    icon = unused_icons[int(input(f"Player {i + 1} chooses: ")) - 1]
     setup_card = random.choice(unused_setup_cards)
+
 
     # let players choose which side of setup cards to pick
     # setup_card_i = random.randint(0, len(unused_setup_cards) // 2 - 1) * 2
@@ -125,17 +132,20 @@ for _ in range(players_count):
     unused_setup_cards.remove(setup_card)
 players.sort(key=lambda player: player.initiative_value)
 
+
+
 collection.set_for_n_players(players_count)  # removes excessive cards
 
 current_epoch_n = 0
 current_epoch = epochs[current_epoch_n]
 
 game_finished = False
+# TODO: After first epoch ends first player make last move.
 while not game_finished:
     print(current_epoch, "begins!")
 
     # ask starting player for wheel position
-    print(f"{players[0].icon}, choose where to start:\n"
+    print(f"{players[0].icon} has the lowest initiative value. He chooses where to start:\n"
           f"1. Income\n"
           f"2. Military\n"
           f"3. Culture\n"
@@ -181,7 +191,12 @@ while not game_finished:
     # make sculptures
     # TODO: sculptures :)
     for player in players:
-        pass  # check if can make a sculpture
+        # check if can make a sculpture
+        print(player, "Trying to build structure")
+        sum_player_culture = player.track_values[CULTURE]
+        for card in player.cards[CULTURE]:
+            pass
+
 
     # phase B
     # while cards on the table
