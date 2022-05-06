@@ -79,6 +79,7 @@ while not game_finished:
             chosen_card = choices[choice]
             print(f"{chosen_card}")
             if input("Buy or sell? ") == "buy":
+                # TODO: need to update player values when adding card
                 player.add_card(chosen_card)
             else:
                 player.coins += (current_epoch_n + 1)
@@ -128,7 +129,7 @@ while not game_finished:
     }
 
     # fight colonies
-    # TODO: fix bug: need to update player values when adding card
+
 
     for player in players:
         print(f"{player} makes his move")
