@@ -152,18 +152,18 @@ while not game_finished:
             # chose random colony
             if action == 'join':
                 random_colony = random.choice(collection.colonies[strength])
-                player.add_colony(random_colony)
-                collection.colonies[strength].remove(random_colony)
-
-                #  update player values
-                player.track_values[INCOME] += random_colony.values[INCOME]
-                player.track_values[MILITARY] += random_colony.values[MILITARY]
-                player.track_values[CULTURE] += random_colony.values[CULTURE]
-                player.track_values[FOOD] += random_colony.values[FOOD]
-
+                
                 # check if enough coins
                 if player.coins > cost[random_colony.strength][action]:
                     player.coins -= cost[accessible_strength][action]
+                    player.add_colony(random_colony)
+                    collection.colonies[strength].remove(random_colony)
+
+                    #  update player values
+                    player.track_values[INCOME] += random_colony.values[INCOME]
+                    player.track_values[MILITARY] += random_colony.values[MILITARY]
+                    player.track_values[CULTURE] += random_colony.values[CULTURE]
+                    player.track_values[FOOD] += random_colony.values[FOOD]
                 else:
                     print("not enough money")
             elif action == 'rob':
