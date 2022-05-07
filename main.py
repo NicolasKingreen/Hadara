@@ -6,6 +6,7 @@ from epochs import *
 from card_types import *
 from player_icons import *
 from colony_types import *
+import structure_type
 
 # utilities
 from utility import *
@@ -190,12 +191,72 @@ while not game_finished:
         fight_colony(player)
     # make sculptures
     # TODO: sculptures :)
+
+    statue_type_to_culture = {
+        structure_type.EASY: 6,
+        structure_type.MEDIUM: 12,
+        structure_type.STRONG: 20,
+        structure_type.VERY_STRONG: 30
+    }
+    statue_type = {
+        6: structure_type.EASY,
+        12: structure_type.MEDIUM,
+        20: structure_type.STRONG,
+        30: structure_type.VERY_STRONG
+    }
+
     for player in players:
+
         # check if can make a sculpture
-        print(player, "Trying to build structure")
-        sum_player_culture = player.track_values[CULTURE]
-        for card in player.cards[CULTURE]:
-            pass
+        main_action = input(f"{player}Do you want to make a statue?").lower()
+        if main_action == 'yes':
+
+            print(player, "Trying to build statue")
+            sum_player_culture = player.track_values[CULTURE]
+            max_culture = max([statue.culture for statue in player.statues]) if len(player.statues) else -1
+            print(collection.structures)
+
+
+            accessible_culture = -1
+            for culture in collection.structures:
+                if max_culture < statue_type_to_culture[culture] <= player.track_values[CULTURE]:
+                    accessible_culture = statue_type_to_culture[culture]
+                    break
+
+            if accessible_culture != -1:
+
+                # available_statues = [collection.structures[statue_type] for statue_type in collection.structures] \
+                #     if collection.structures[statue_type].culture <= sum_player_culture else None
+
+                available_statues = []
+                for statue_type in collection.structures:
+                    if collection.structures[statue_type].culture <= sum_player_culture:
+                        available_statues.append(collection.structures[statue_type])
+                if len(available_statues) >= 2:
+                    chose = int(input(f"You can make {available_statues} chose (1-{len(available_statues)})"))
+                else:
+                    chose = 1
+
+                player.add_structure(available_statues[chose - 1])
+
+                type_of_bonus = input(f"Chose what kind of bonus you want to use.\nYour bonus counter = "
+                                      f"{available_statues[chose - 1].counter}\n"
+                                      f"{INCOME, CULTURE, MILITARY, FOOD, 'Victory points'}\n"
+                                      f"**Victory points doesn't works for now")
+                # Victory points doesn't works for now
+
+                player.track_values[type_of_bonus] += available_statues[chose - 1].counter
+
+                print(f"Your chose\n"
+                      f"{type_of_bonus} + {available_statues[chose - 1].counter}")
+
+
+
+
+
+
+
+
 
 
     # phase B
