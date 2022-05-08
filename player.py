@@ -67,8 +67,8 @@ class Player:
 
     def add_colony(self, colony):
         if colony not in self.colonies:
-            """
             self.colonies.append(colony)
+            """
             self.track_values[CULTURE] += colony.values[CULTURE]
             self.track_values[MILITARY] += colony.values[MILITARY]
             self.track_values[INCOME] += colony.values[INCOME]
@@ -103,5 +103,7 @@ class Player:
         """Checks if not sufficient food and kills overpopulation"""
         while self.get_total_cards() > self.track_values[FOOD]:
             random_type = random.choice(self.cards)
+            while not self.cards[random_type]:
+                random_type = random.choice(self.cards)
             random_card = random.choice(self.cards[random_type])
             self.cards[random_type].remove(random_card)
