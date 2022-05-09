@@ -13,8 +13,8 @@ class Player:
 
         self.silver_medals = []
         self.golden_medals = []
-        self.statues = []
         self.colonies = []
+        self.statues = []
 
         self.cards = {
             INCOME: [],
@@ -60,26 +60,20 @@ class Player:
             self.cards[card.card_type].append(card)
             self.update_track_values()
             self.coins -= card.cost - price_off
-            return True
         else:
             print("Not enough coins")
-            return False
 
     def add_colony(self, colony):
         if colony not in self.colonies:
             self.colonies.append(colony)
-            """
-            self.track_values[CULTURE] += colony.values[CULTURE]
-            self.track_values[MILITARY] += colony.values[MILITARY]
-            self.track_values[INCOME] += colony.values[INCOME]
-            self.track_values[FOOD] += colony.values[FOOD]
-            """
+            self.update_track_values()
 
-    def add_structure(self, structure):
-        if len(self.statues) <= 4:
-            self.statues.append(structure)
+    def add_statue(self, statue):
+        if statue not in self.statues:
+            self.statues.append(statue)
+            self.update_track_values()
         else:
-            print("You have 4 structures yet")
+            print("[Player] Trying to add an existing statue.")  # should not be in final version
 
     def update_track_values(self):
         """Recalculates track values from owned cards, colonies and sculptures"""
@@ -92,8 +86,11 @@ class Player:
             for value_type in colony.values:
                 track_values[value_type] += colony.values[value_type]
 
-        # TODO: count sculptures values
-        # Before that sculpture class needs to be refactored
+        for statue in self.statues:
+            # TODO: do something with victory points selection
+            selection = statue.selected_value
+            if selection in (INCOME, MILITARY, CULTURE, FOOD):
+                self.track_values[selection] += statue.counter
         self.track_values = track_values.copy()
 
     def get_income(self):
@@ -115,5 +112,8 @@ class Player:
                 total_score += card.points
         for colony in self.colonies:
             total_score += colony.points
-        # TODO: sculptures, medals
+        for statue in self.statues:
+            if statue.selected_value is None:
+                total_score += statue.counter
+        # TODO: medals
         return total_score

@@ -7,7 +7,7 @@ from card_types import *
 from player_icons import *
 from colony_types import *
 from enums import *
-import structure_type
+import structure_types
 
 # utilities
 from utility import *
@@ -15,6 +15,7 @@ from utility import *
 # classes
 from collection import Collection
 from player import Player
+from statue import Statue
 
 # initializing game
 collection = Collection()
@@ -83,40 +84,24 @@ def fight_colony(player):
         colony_type = get_key_from_value(colony_type_to_strength, accessible_strength)
         if collection.colonies[colony_type]:
             print(player)
-            print(f"You can rob or take colonies with strength {accessible_strength}. "
-                  f"It will cost {cost[accessible_strength]['join']}. "
-                  f"While robin will give you {cost[accessible_strength]['rob']}. "
+            print(f"You can take or rob a colony with strength {accessible_strength}. "
+                  f"It will cost {cost[accessible_strength]['join']} coins "
+                  f"while robbing will give you {cost[accessible_strength]['rob']}. "
                   f"Number of colonies: {len(collection.colonies[colony_type])}")
             action = input("Chose what you want to do? (join or rob): ").lower()
 
         # choose random colony
         random_colony = random.choice(collection.colonies[colony_type])
         if action == 'join':
-            # chose random colony
 
-            random_colony = random.choice(collection.colonies[colony_type])
-            if action == 'join':
-
-                # check if enough coins
-                if player.coins > cost[random_colony.strength][action]:
-                    player.coins -= cost[accessible_strength][action]
-                    player.add_colony(random_colony)
-                    collection.colonies[colony_type].remove(random_colony)
-
-                    #  update player values
-                    player.update_track_values()
-                else:
-                    print("not enough money")
-            elif action == 'rob':
+            # check if enough coins
+            if player.coins > cost[random_colony.strength][action]:
+                player.coins -= cost[accessible_strength][action]
+                player.add_colony(random_colony)
                 collection.colonies[colony_type].remove(random_colony)
-                player.coins += cost[accessible_strength][action]
-        else:
-            print(f"{player.icon}, sorry, you can't take or rob any colonies.")
-                #  update player values
-                player.update_track_values()
             else:
-                print("not enough money")
-        else:
+                print(f"[Main] Player has not enough money")
+        elif action == 'rob':
             # TODO: fix bug when player robs colonies, he can rob them again
             collection.colonies[colony_type].remove(random_colony)
             player.coins += cost[accessible_strength][action]
@@ -127,50 +112,49 @@ def fight_colony(player):
 def build_statue(player):
 
     # rec available statue to build
-    sum_player_culture = player.track_values[CULTURE]
     available_statues = []
-    for statue_type in collection.structures:
-        if collection.structures[statue_type].culture <= sum_player_culture:
-            available_statues.append(collection.structures[statue_type])
-
-    # Allow to build only new statues
-    for available_statue in available_statues:
-        if available_statue in player.statues:
-            available_statues.remove(available_statue)
-
-    # print(f"[Debug] [Available statues] [{available_statues}]")
+    for statue in collection.statues.values():
+        if statue.culture <= player.track_values[CULTURE]\
+                and statue.culture not in [st.culture for st in player.statues]:
+            available_statues.append(statue)
 
     if available_statues:
-
-        main_action = input(f"{player}Do you want to make a statue?\n").lower()
-        if main_action == 'yes':
-            print(player, "Trying to build statue")
-
-            if len(available_statues) >= 2:
-                chose = int(input(f"You can make {available_statues} chose (1-{len(available_statues)})"))
-            else:
-                chose = 1
-
-            player.add_structure(available_statues[chose - 1])
-
-            type_of_bonus = input(f"Chose what kind of bonus you want to use.\nYour bonus counter = "
-                                  f"{available_statues[chose - 1].counter}\n"
-                                  f"{INCOME, CULTURE, MILITARY, FOOD, 'Victory points'}\n"
-                                  f"**Victory points doesn't works for now\n")
-            # Victory points doesn't works for now
-
-            player.track_values[type_of_bonus] += available_statues[chose - 1].counter
-
-            print(f"Your chose\n"
-                  f"{type_of_bonus} + {available_statues[chose - 1].counter}")
-            available_statues.clear()
-
-
-print("Welcome to Hadara!")  # TODO: Make initialize of players
-def make_sculpture(player):
-    # TODO: sculptures :)
-    # check if can make a sculpture
-    pass
+        print(player)
+        print(f"You can make {len(available_statues)} statues.")
+        main_action = input("Do you want to make a statue? (Y/[n]) ").lower()
+        if main_action == 'y':
+            statue_choice = 0
+            if len(available_statues) > 1:
+                for i, statue in enumerate(available_statues):
+                    print(f"{i+1}. {statue}")
+                statue_choice = int(input(f"Chose one (1-{len(available_statues)}): ")) - 1
+            selected_statue = available_statues[statue_choice]
+            print(f"You are going to build a statue "
+                  f"that gives {selected_statue.counter} "
+                  f"to the specified bonus value.")
+            print("1. Income")
+            print("2. Military")
+            print("3. Culture")
+            print("4. Food")
+            print("5. Victory points")
+            bonus_choice = int(input(f"Select bonus type: ")) - 1
+            selected_bonus = None
+            if bonus_choice == 0:
+                selected_bonus = INCOME
+            elif bonus_choice == 1:
+                selected_bonus = MILITARY
+            elif bonus_choice == 2:
+                selected_bonus = CULTURE
+            elif bonus_choice == 3:
+                selected_bonus = FOOD
+            # TODO: fix this mess with 'copying' statue from collection
+            new_statue = Statue(selected_statue.culture,
+                                selected_statue.counter,
+                                selected_statue.victory_points,
+                                selected_bonus)
+            player.add_statue(new_statue)
+    else:
+        print(f"{player.icon}, you can't build any statues yet.")
 
 
 print("Welcome to Hadara!")
@@ -204,7 +188,6 @@ current_epoch_n = 0
 current_epoch = epochs[current_epoch_n]
 
 game_finished = False
-# TODO: fix bug when after the first epoch ends first player makes his move last
 while not game_finished:
     print(current_epoch, "begins!")
 
@@ -228,7 +211,7 @@ while not game_finished:
             print(f"You are on {current_type}. Now you have to choose between two cards of the current type.\n"
                   f"One of them will be available for you to buy or sell. "
                   f"The other one will be discarded back to the game.")
-            for i, choice in enumerate(choices):
+            for i, choice in enumerate(choices):  # TODO: lower price if has any of the same type
                 print(f"{i+1}.", choice)
             print(f"Choose card to buy/sell (1 or 2):")
             choice = int(input()) - 1
@@ -254,32 +237,30 @@ while not game_finished:
     for player in players:
         fight_colony(player)
     # make sculptures
-    # TODO: sculptures :)
-
     for player in players:
         build_statue(player)
-
 
     # phase B
     # TODO: Fix phase B
     # while cards on the table
-    #   ask every player sorted by their initiative value to choose remaining card type and then ask for their decision
-    while not any(value for value in dropped_cards.values()):
+    #   ask every player sorted by their initiative value
+    #   to choose remaining card type and then ask for their decision
+    print("Phase B starts.")
+    while any(value for value in dropped_cards.values()):
         for player in players:
             print(f"{player.icon}, you can pick a card. There are: ")
             for i, card_type in enumerate(dropped_cards):
-                print(f"{i}. {len(dropped_cards[card_type])} {card_type} card(s).")
+                print(f"{i+1}. {len(dropped_cards[card_type])} {card_type} card(s).")
             choice = int(input()) - 1
             chosen_type = circle[choice]
             chosen_card = dropped_cards[chosen_type].pop()
-            print(f"{chosen_card}")
+            print(chosen_card)
             if input("Buy or sell? ") == "buy":
                 player.add_card(chosen_card)
             else:
                 player.coins += (current_epoch_n + 1)
 
-            dropped_cards[chosen_type].remove(chosen_card)
-
+    print("Phase B ends. Players get income. Time to fight a colony and make a sculpture.")
     # pay coins
     for player in players:
         player.get_income()
@@ -290,8 +271,9 @@ while not game_finished:
 
     # make sculptures
     for player in players:
-        pass
+        build_statue(player)
 
+    print("Checking if every player has sufficient food.")
     # if enough food
     for player in players:
         player.has_enough_food()
@@ -299,7 +281,7 @@ while not game_finished:
     # next epoch, starting player is the next by initiative value
     current_epoch_n += 1
     current_epoch = epochs[current_epoch_n]
-    shift(players, 1)
+    players = shift(players, 1)
 
 print("Game is over. Thanks for playing!")
 print("Results:")
