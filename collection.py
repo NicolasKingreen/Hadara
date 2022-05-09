@@ -63,10 +63,10 @@ class Collection:
         }
 
         self.structures = {
-            structure_type.EASY: [],
-            structure_type.MEDIUM: [],
-            structure_type.STRONG: [],
-            structure_type.VERY_STRONG: []
+            structure_type.EASY: None,
+            structure_type.MEDIUM: None,
+            structure_type.STRONG: None,
+            structure_type.VERY_STRONG: None
         }
 
         # reads colonies from json
@@ -145,7 +145,7 @@ class Collection:
             30: structure_type.VERY_STRONG
         }
         struct_type = number_to_type[structure.culture]
-        self.structures[struct_type].append(structure)
+        self.structures[struct_type] = structure
 
     def set_for_n_players(self, n):
         for epoch in self.cards:

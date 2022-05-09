@@ -42,7 +42,10 @@ class Player:
         colonies = "Colonies:\n"
         for colony in self.colonies:
             colonies += f"\t{colony.strength}: {colony}\n"
-        return "".join([asterisks_line, base_info, cards, colonies, asterisks_line])
+        statues = "Statues:\n"
+        for statue in self.statues:
+            statues += f"\t{statue.culture}: {statue}\n"
+        return "".join([asterisks_line, base_info, cards, colonies, statues, asterisks_line])
 
     @property
     def initiative_value(self):
@@ -65,10 +68,12 @@ class Player:
     def add_colony(self, colony):
         if colony not in self.colonies:
             self.colonies.append(colony)
+            """
             self.track_values[CULTURE] += colony.values[CULTURE]
             self.track_values[MILITARY] += colony.values[MILITARY]
             self.track_values[INCOME] += colony.values[INCOME]
             self.track_values[FOOD] += colony.values[FOOD]
+            """
 
     def add_structure(self, structure):
         if len(self.statues) <= 4:
@@ -86,7 +91,9 @@ class Player:
         for colony in self.colonies:
             for value_type in colony.values:
                 track_values[value_type] += colony.values[value_type]
+
         # TODO: count sculptures values
+        # Before that sculpture class needs to be refactored
         self.track_values = track_values.copy()
 
     def get_income(self):
@@ -96,6 +103,8 @@ class Player:
         """Checks if not sufficient food and kills overpopulation"""
         while self.get_total_cards() > self.track_values[FOOD]:
             random_type = random.choice(self.cards)
+            while not self.cards[random_type]:
+                random_type = random.choice(self.cards)
             random_card = random.choice(self.cards[random_type])
             self.cards[random_type].remove(random_card)
 
