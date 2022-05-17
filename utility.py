@@ -19,3 +19,15 @@ def get_key_from_value(d, val):
         if value == val:
             return key
     return None
+
+
+# ui
+
+def print_centered(text, filler='', end='\n'):
+    print(f'{text:{filler}^80}', end=end)
+
+
+def print_choices(seq, spaces=20):
+    for i, item in enumerate(seq):
+        line = f'{i+1}. {item}'
+        print(" " * spaces, line)

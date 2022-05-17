@@ -28,7 +28,7 @@ class Player:
         return f"<Player({self.icon}, {self.coins} coins, {self.track_values}, {self.initiative_value}, {self.cards}, {self.colonies})>"
 
     def __str__(self):
-        asterisks_line = "".join(["*" * 64, "\n"])
+        asterisks_line = "".join(["*" * 80, "\n"])
         base_info = f"{self.icon}. Coins: {self.coins} \n" \
                  f"({self.track_values[INCOME]}, {self.track_values[MILITARY]}, " \
                  f"{self.track_values[CULTURE]}, {self.track_values[FOOD]})\n"
