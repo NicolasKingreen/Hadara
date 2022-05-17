@@ -157,16 +157,15 @@ def build_statue(player):
         print(f"{player.icon}, you can't build any statues yet.")
 
 
-print("Welcome to Hadara!")
-players_count = int(input("Input the amount of players (2-5): "))
+print_centered("Welcome to Hadara!")
+print_centered("Input the amount of players (2-5).")
+players_count = int(input("[GameManager] > "))
 
 players = []
 for i in range(players_count):
-    # icon = random.choice(unused_icons)
-    print("Available icons: ")
-    for j, icon in enumerate(unused_icons):
-        print(f"{j + 1}. {icon}")
-    icon = unused_icons[int(input(f"Player {i + 1} chooses: ")) - 1]
+    print_centered("Available icons: ")
+    print_choices(unused_icons)
+    icon = unused_icons[int(input(f"Player {i + 1} > ")) - 1]
     setup_card = random.choice(unused_setup_cards)
 
     # let players choose which side of setup cards to pick
@@ -189,16 +188,15 @@ current_epoch = epochs[current_epoch_n]
 
 game_finished = False
 while not game_finished:
-    print(current_epoch, "begins!")
+    print()
+    print_centered(f' {current_epoch}, begins! ', filler='*')
+    print()
 
     # ask starting player for wheel position
-    print(f"{players[0].icon} has the lowest initiative value. He chooses where to start:\n"
-          f"1. Income\n"
-          f"2. Military\n"
-          f"3. Culture\n"
-          f"4. Food")
-          # f"5. Technical")
-    start_pos = int(input()) - 1
+    print_centered(f"{players[0].icon} has the lowest initiative value.")
+    print_centered("He chooses where to start.")
+    print_choices(circle)
+    start_pos = int(input(f'{players[0].icon} > ')) - 1
 
     # phase A
     # while not at start
@@ -208,16 +206,19 @@ while not game_finished:
             print(player)
             current_type = circle[(start_pos + i) % len(circle)]
             choices = random.sample(collection.cards[current_epoch][current_type], 2)
-            print(f"You are on {current_type}. Now you have to choose between two cards of the current type.\n"
-                  f"One of them will be available for you to buy or sell. "
-                  f"The other one will be discarded back to the game.")
-            for i, choice in enumerate(choices):  # TODO: lower price if has any of the same type
-                print(f"{i+1}.", choice)
-            print(f"Choose card to buy/sell (1 or 2):")
-            choice = int(input()) - 1
+            print_centered(f"You are on {current_type}.")
+            print_centered("Now you have to choose between two cards of the current type.")
+            print_centered("One of them will be available for you to buy or sell.")
+            print_centered("The other one will be discarded back to the game.")
+            print_choices(choices)
+            print_centered("Choose card to buy/sell (1 or 2).")
+            choice = int(input(f'{player.icon} > ')) - 1
             chosen_card = choices[choice]
-            if input("Buy or sell?\n"
-                     "* Cards that you sell are completely discarded from the game.\n").lower() == "buy":
+
+            print_centered("You have to decide to buy it or sell.")
+            print_centered("* Cards that you sell are completely discarded from the game.")
+            decision = input(f'{player.icon} > ').lower()
+            if decision == "buy":
                 player.add_card(chosen_card)
             else:
                 player.coins += (current_epoch_n + 1)
