@@ -27,7 +27,15 @@ def print_centered(text, filler='', end='\n'):
     print(f'{text:{filler}^80}', end=end)
 
 
-def print_choices(seq, spaces=20):
+def print_choices_incol(seq, spaces=20):
     for i, item in enumerate(seq):
         line = f'{i+1}. {item}'
         print(" " * spaces, line)
+
+
+def print_choices_inline(seq, spaces=20):
+    output = ""
+    for i, item in enumerate(seq):
+        output += f'{i+1}. {item}\t'
+    output = output.center(80)
+    print(output)

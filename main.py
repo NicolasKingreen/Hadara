@@ -164,8 +164,12 @@ players_count = int(input("[GameManager] > "))
 players = []
 for i in range(players_count):
     print_centered("Available icons: ")
-    print_choices(unused_icons)
-    icon = unused_icons[int(input(f"Player {i + 1} > ")) - 1]
+    if len(unused_icons) > 1:
+        print_choices_inline(unused_icons)
+        icon = unused_icons[int(input(f"Player {i + 1} > ")) - 1]
+    else:
+        icon = unused_icons[0]
+        print(f"Player {i + 1} is getting {icon}.")
     setup_card = random.choice(unused_setup_cards)
 
     # let players choose which side of setup cards to pick
@@ -195,7 +199,7 @@ while not game_finished:
     # ask starting player for wheel position
     print_centered(f"{players[0].icon} has the lowest initiative value.")
     print_centered("He chooses where to start.")
-    print_choices(circle)
+    print_choices_inline(circle)
     start_pos = int(input(f'{players[0].icon} > ')) - 1
 
     # phase A
@@ -210,7 +214,7 @@ while not game_finished:
             print_centered("Now you have to choose between two cards of the current type.")
             print_centered("One of them will be available for you to buy or sell.")
             print_centered("The other one will be discarded back to the game.")
-            print_choices(choices)
+            print_choices_incol(choices)
             print_centered("Choose card to buy/sell (1 or 2).")
             choice = int(input(f'{player.icon} > ')) - 1
             chosen_card = choices[choice]
